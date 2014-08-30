@@ -215,7 +215,7 @@ FCITX_DEFINE_PLUGIN(fcitx_kimpanel_ui, ui, FcitxUI) = {
 };
 
 #define INDICATOR_KEYBOARD_PREFIX "@indicator-keyboard-"
-#define INDICATOR_KEYBOARD_LENGTH 20
+#define INDICATOR_KEYBOARD_LENGTH (sizeof(INDICATOR_KEYBOARD_PREFIX) - 1)
 
 static inline boolean
 isUnity()
@@ -225,7 +225,7 @@ isUnity()
 
 static void SetIMMenu(FcitxIM *pim, char** prop)
 {
-    char layout[INDICATOR_KEYBOARD_LENGTH + 3] = INDICATOR_KEYBOARD_PREFIX;
+    char layout[] = INDICATOR_KEYBOARD_PREFIX "Xx";
     const char *icon = "";
     if (strncmp(pim->uniqueName, "fcitx-keyboard-",
                 strlen("fcitx-keyboard-")) != 0) {
@@ -233,7 +233,6 @@ static void SetIMMenu(FcitxIM *pim, char** prop)
     } else if (isUnity()) {
         layout[INDICATOR_KEYBOARD_LENGTH + 0] = toupper(pim->langCode[0]);
         layout[INDICATOR_KEYBOARD_LENGTH + 1] = tolower(pim->langCode[1]);
-        layout[INDICATOR_KEYBOARD_LENGTH + 2] = '\0';
         icon = layout;
     }
     boolean result = CheckAddPrefix(&icon);
@@ -244,7 +243,7 @@ static void SetIMMenu(FcitxIM *pim, char** prop)
 
 static void SetIMIcon(FcitxInstance* instance, char** prop)
 {
-    char layout[INDICATOR_KEYBOARD_LENGTH + 3] = INDICATOR_KEYBOARD_PREFIX;
+    char layout[] = INDICATOR_KEYBOARD_PREFIX "Xx";
     const char* icon;
     char* imname;
     char* description;
@@ -263,7 +262,6 @@ static void SetIMIcon(FcitxInstance* instance, char** prop)
                 if (isUnity()) {
                     layout[INDICATOR_KEYBOARD_LENGTH + 0] = toupper(im->langCode[0]);
                     layout[INDICATOR_KEYBOARD_LENGTH + 1] = tolower(im->langCode[1]);
-                    layout[INDICATOR_KEYBOARD_LENGTH + 2] = '\0';
                     icon = layout;
                 } else {
                     icon = "";
